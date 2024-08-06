@@ -44,4 +44,15 @@ class Player():
     def hit(self, damage):
         self.health -= damage
         
+    #collision    
+    def collision(self, other):
+        
+        x_distance_sqr = (self.pos[0] - other.pos[0])**2
+        y_distance_sqr = (self.pos[1] - other.pos[1])**2
+        combined_radius = (self.size + other.size) ** 2
+        
+        
+        return True if x_distance_sqr + y_distance_sqr <= combined_radius else False
+
+        
     
