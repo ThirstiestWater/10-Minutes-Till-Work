@@ -11,12 +11,12 @@ class Player():
         self.health_percentage = 1
         
         #size of character
-        self.size = game.world_w * 0.30
+        self.size = game.world_w * 0.02
         self.pos = [game.world_w//2, game.world_h//2]
         
         self.game = game
         self.direction = [0, 0]
-        self.speed = 1
+        self.speed = 5
         
         
     def render(self):
@@ -40,5 +40,8 @@ class Player():
     
     def direction_change(self, new_direction):
         self.direction = new_direction
+        
+    def hit(self, damage):
+        self.health -= damage
         
     
