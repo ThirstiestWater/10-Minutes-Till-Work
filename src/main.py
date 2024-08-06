@@ -31,8 +31,14 @@ class Game():
             seconds_tracker = 0
             playing = True
             movement = [0,0]
-            player = Player(self)
-            camera = Camera(self)
+            # Initialize all entities
+            self.player = Player(self)
+            self.camera = Camera(target=self.player)
+            self.tile_map = Map(self)
+
+            self.enemies = []
+            self.enemy_remove_list = []
+        
             #Run main scene
             while playing:
                 self.screen.fill(self.background)
@@ -43,7 +49,7 @@ class Game():
                     if event.type == pygame.KEYDOWN:
                         match event.key: # Switch Case for the Keys that are pressed
                             case pygame.K_SPACE:
-                                player.hit(1)
+                                self.player.hit(1)
                             case pygame.K_a:
                                 movement[0] -= 1
                             case pygame.K_d:
@@ -53,7 +59,7 @@ class Game():
                             case pygame.K_s:
                                 movement[1] += 1
                         # After a change in movement occurs, change player's direction
-                        player.direction_change(normalize_vector(movement))
+                        self.player.direction_change(normalize_vector(movement))
                         
                     if event.type == pygame.KEYUP:
                         match event.key:
@@ -66,12 +72,14 @@ class Game():
                             case pygame.K_s:
                                 movement[1] -= 1
                         # After a change in movement occurs, change player's direction
-                        player.direction_change(normalize_vector(movement))
+                        self.player.direction_change(normalize_vector(movement))
 
-                camera.follow(player.pos)
-
-                player.update()
-                player.render()
+                self.player.update()
+                self.camera.update()
+                self.tile_map.update()
+                
+                self.tile_map.render()                
+                self.player.render()
 
                 # if seconds_tracker % (self.FPS//2) == 0:
                 #     f"Half a second has passed"
