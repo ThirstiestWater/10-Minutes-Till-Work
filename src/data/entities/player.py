@@ -1,6 +1,4 @@
 import pygame
-import random
-import math
 
 class Player():
     
@@ -17,19 +15,31 @@ class Player():
         self.game = game
         self.direction = [0, 0]
         self.speed = 5
-        
+
+        self.facing = [1,0]
         
     def render(self):
         real_pos = [self.pos[0] + self.game.camera.get_offset()[0], self.pos[1] + self.game.camera.get_offset()[1]]
+
+        #Coffee Cup
         cup_color = (254,250,224)
         pygame.draw.circle(self.game.screen, cup_color, real_pos, self.size)
-        coffee_color = (221,161,94)
+        #Handle
         
         #take updated coffee size
+        coffee_color = (221,161,94)
         pygame.draw.circle(self.game.screen, coffee_color, real_pos, self.size * 0.9 * self.health_percentage)
+
+        #Eyes
+        norm = [self.facing[1], self.facing[0]]
+        pygame.draw.circle(self.game.screen, (0, 0, 0), [real_pos[0] + self.facing[0] * self.size * 4/10 - norm[0] * self.size*1/3, real_pos[1] + self.facing[1] * self.size*4/10 + norm[1] * self.size*1/3], self.size//6)
+        pygame.draw.circle(self.game.screen, (0, 0, 0), [real_pos[0] + self.facing[0] * self.size * 4/10 + norm[0] * self.size*1/3, real_pos[1] + self.facing[1] * self.size*4/10 - norm[1] * self.size*1/3], self.size//6)
     
     
     def update(self):
+        self.facing[0] = self.pos[0] - self.game.mouse_pos[0]
+        self.facing[1] = self.pos[1] - self.game.mouse_pos[1]
+        self.facing = self.game.normalize_vector(self.facing)
         
         #update pos based off of direction looking and speed of movement
         self.pos[0] += self.direction[0] * self.speed

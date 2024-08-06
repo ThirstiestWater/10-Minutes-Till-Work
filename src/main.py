@@ -60,7 +60,7 @@ class Game():
                             case pygame.K_s:
                                 movement[1] += 1
                         # After a change in movement occurs, change player's direction
-                        self.player.direction_change(normalize_vector(movement))
+                        self.player.direction_change(self.normalize_vector(movement))
                         
                     if event.type == pygame.KEYUP:
                         match event.key:
@@ -73,7 +73,7 @@ class Game():
                             case pygame.K_s:
                                 movement[1] -= 1
                         # After a change in movement occurs, change player's direction
-                        self.player.direction_change(normalize_vector(movement))
+                        self.player.direction_change(self.normalize_vector(movement))
                 self.mouse_pos = [pygame.mouse.get_pos()[0] - self.camera.get_offset()[0], pygame.mouse.get_pos()[1] - self.camera.get_offset()[1]]
 
                 self.player.update()
@@ -110,5 +110,11 @@ class Game():
 
         pygame.quit()
         sys.exit()
+    
+    def normalize_vector(self, vector: list) -> list:
+        try:
+            return [vector[0] / math.sqrt(vector[0]**2 + vector[1]**2), vector[1] / math.sqrt(vector[0]**2 + vector[1]**2)]
+        except:
+            return [0, 0]
 
 Game().run()
