@@ -8,7 +8,7 @@ class Player():
     
     def __init__(self, game):
         self.health = self.MAX_HEALTH
-        self.health_percentage = 100
+        self.health_percentage = 1
         
         #size of character
         self.size = game.world_w * 0.30
@@ -21,7 +21,7 @@ class Player():
         
     def render(self):
         cup_color = (254,250,224)
-        pygame.draw.cirle(self.game.screen, cup_color, (self.pos), self.size)
+        pygame.draw.circle(self.game.screen, cup_color, (self.pos), self.size)
         coffee_color = (221,161,94)
         
         #take updated coffee size
@@ -35,8 +35,8 @@ class Player():
         self.pos[1] += self.direction[1] * self.speed
         
         #decrement coffee size based off of health percentage
-        if self.health_percentage > (self.health / self.MAX_HEALTH * 100):
-            self.health_percentage -= 1
+        if self.health_percentage > (self.health / self.MAX_HEALTH):
+            self.health_percentage -= 0.01
     
     def direction_change(self, new_direction):
         self.direction = new_direction
