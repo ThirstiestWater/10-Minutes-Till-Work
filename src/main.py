@@ -18,10 +18,10 @@ class Game():
         self.joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 
         #Set up Display
-        self.world_w, self.world_h = 1400, 700
+        self.world_w, self.world_h = 1000, 500
         self.screen = pygame.display.set_mode((self.world_w, self.world_h))
         pygame.display.set_caption("Project")
-        self.background = (15, 15, 30)
+        self.background = (100, 230, 100)
 
     def run(self):
         #Run Game
