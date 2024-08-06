@@ -26,7 +26,7 @@ class Enemies():
         
         
         #take updated ice size
-        pygame.draw.circle(self.game.screen, ice_color, (real_pos), self.size * 0.9 * self.health_percentage)
+        pygame.draw.circle(self.game.screen, ice_color, real_pos, self.size * 0.9 * self.health_percentage)
         
         
     def update(self):

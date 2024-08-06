@@ -20,12 +20,13 @@ class Player():
         
         
     def render(self):
+        real_pos = [self.pos[0] + self.game.camera.get_offset()[0], self.pos[1] + self.game.camera.get_offset()[1]]
         cup_color = (254,250,224)
-        pygame.draw.circle(self.game.screen, cup_color, (self.pos), self.size)
+        pygame.draw.circle(self.game.screen, cup_color, real_pos, self.size)
         coffee_color = (221,161,94)
         
         #take updated coffee size
-        pygame.draw.circle(self.game.screen, coffee_color, (self.pos), self.size * 0.9 * self.health_percentage)
+        pygame.draw.circle(self.game.screen, coffee_color, real_pos, self.size * 0.9 * self.health_percentage)
     
     
     def update(self):
