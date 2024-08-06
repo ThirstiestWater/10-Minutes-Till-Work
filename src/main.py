@@ -1,15 +1,8 @@
 import pygame, math, sys
 from pygame.locals import *
-import data.utils
+from data.utils import *
 from data.entities.player import Player
 from random import randint
-
-def normalize_vector(vector: list) -> list:
-    try:
-        return [vector[0] / math.sqrt(vector[0]**2 + vector[1]**2), vector[1] / math.sqrt(vector[0]**2 + vector[1]**2)]
-    except:
-        return [0, 0]
-
 
 class Game():
     def __init__(self):
@@ -39,6 +32,7 @@ class Game():
             playing = True
             movement = [0,0]
             player = Player(self)
+            camera = Camera(self)
             #Run main scene
             while playing:
                 self.screen.fill(self.background)
@@ -74,9 +68,10 @@ class Game():
                         # After a change in movement occurs, change player's direction
                         player.direction_change(normalize_vector(movement))
 
+                camera.follow(player.pos)
+
                 player.update()
                 player.render()
-            
 
                 # if seconds_tracker % (self.FPS//2) == 0:
                 #     f"Half a second has passed"
