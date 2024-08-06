@@ -21,7 +21,7 @@ class Game():
         self.world_w, self.world_h = 1000, 500
         self.screen = pygame.display.set_mode((self.world_w, self.world_h))
         pygame.display.set_caption("Project")
-        self.background = (100, 230, 100)
+        self.background = (127, 85, 57)
 
     def run(self):
         #Run Game
@@ -37,7 +37,8 @@ class Game():
             self.tile_map = Map(self)
 
             self.enemies = []
-            self.enemy_remove_list = []
+
+            self.bullets = []
         
             #Run main scene
             while playing:
@@ -73,6 +74,7 @@ class Game():
                                 movement[1] -= 1
                         # After a change in movement occurs, change player's direction
                         self.player.direction_change(normalize_vector(movement))
+                self.mouse_pos = [pygame.mouse.get_pos()[0] - self.camera.get_offset()[0], pygame.mouse.get_pos()[1] - self.camera.get_offset()[1]]
 
                 self.player.update()
                 self.camera.update()
@@ -81,6 +83,20 @@ class Game():
                 self.tile_map.render()                
                 self.player.render()
 
+                i = 0
+                while i < len(self.enemies):
+                    enemy = self.enemies[i]
+                    enemy.update()
+                    enemy.render()
+                    i += 1
+
+                i = 0
+                while i < len(self.bullets):
+                    bullet = self.bullets[i]
+                    bullet.update()
+                    bullet.render()
+                    i += 1
+
                 # if seconds_tracker % (self.FPS//2) == 0:
                 #     f"Half a second has passed"
 
@@ -88,9 +104,6 @@ class Game():
                 #     seconds_tracker = 0
                 #     seconds_timer += 1
                 # seconds_tracker += 1
-
-                # Draws a rectange for reference
-                pygame.draw.rect(self.screen, (255, 255, 255), (10, 10, 10, 10))
 
                 pygame.display.update()
                 self.clock.tick(self.FPS)
