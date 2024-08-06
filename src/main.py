@@ -1,7 +1,7 @@
 import pygame, math, sys
 from pygame.locals import *
 import data.utils
-import data.entities.player as Player
+from data.entities.player import Player
 from random import randint
 
 def normalize_vector(vector: list) -> list:
@@ -58,6 +58,7 @@ class Game():
                                 movement[1] -= 1
                             case pygame.K_s:
                                 movement[1] += 1
+                        # After a change in movement occurs, change player's direction
                         player.direction_change(normalize_vector(movement))
                         
                     if event.type == pygame.KEYUP:
@@ -70,6 +71,7 @@ class Game():
                                 movement[1] += 1
                             case pygame.K_s:
                                 movement[1] -= 1
+                        # After a change in movement occurs, change player's direction
                         player.direction_change(normalize_vector(movement))
 
                 player.update()
@@ -84,6 +86,7 @@ class Game():
                 #     seconds_timer += 1
                 # seconds_tracker += 1
 
+                # Draws a rectange for reference
                 pygame.draw.rect(self.screen, (255, 255, 255), (10, 10, 10, 10))
 
                 pygame.display.update()
