@@ -2,6 +2,7 @@ import pygame, math, sys
 from pygame.locals import *
 from data.utils import *
 from data.entities.player import Player
+from data.entities.bullet import Bullet
 from random import randint
 
 class Game():
@@ -27,8 +28,11 @@ class Game():
         #Run Game
         Running = True
         while Running:
-            seconds_timer = 0
-            seconds_tracker = 0
+            
+            attack_speed = 1
+            shooting_timer = attack_speed * self.FPS
+            clicking = False
+
             playing = True
             movement = [0,0]
             # Initialize all entities
@@ -74,7 +78,17 @@ class Game():
                                 movement[1] -= 1
                         # After a change in movement occurs, change player's direction
                         self.player.direction_change(self.normalize_vector(movement))
+
+                    if event.type == MOUSEBUTTONDOWN:
+                        clicking = True
+                    if event.type == MOUSEBUTTONUP:
+                        clicking = False
+
                 self.mouse_pos = [pygame.mouse.get_pos()[0] - self.camera.get_offset()[0], pygame.mouse.get_pos()[1] - self.camera.get_offset()[1]]
+
+                if clicking and shooting_timer == attack_speed * self.FPS:
+                    shooting_timer = 0
+                    self.bullets.append(Bullet(self))
 
                 self.player.update()
                 self.camera.update()

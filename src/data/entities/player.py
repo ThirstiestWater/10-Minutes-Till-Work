@@ -35,10 +35,9 @@ class Player():
         pygame.draw.circle(self.game.screen, (0, 0, 0), [real_pos[0] + self.facing[0] * self.size * 4/10 - norm[0] * self.size*1/3, real_pos[1] + self.facing[1] * self.size*4/10 + norm[1] * self.size*1/3], self.size//6)
         pygame.draw.circle(self.game.screen, (0, 0, 0), [real_pos[0] + self.facing[0] * self.size * 4/10 + norm[0] * self.size*1/3, real_pos[1] + self.facing[1] * self.size*4/10 - norm[1] * self.size*1/3], self.size//6)
     
-    
     def update(self):
-        self.facing[0] = self.pos[0] - self.game.mouse_pos[0]
-        self.facing[1] = self.pos[1] - self.game.mouse_pos[1]
+        self.facing[0] = self.game.mouse_pos[0] - self.pos[0]
+        self.facing[1] = self.game.mouse_pos[1] - self.pos[1]
         self.facing = self.game.normalize_vector(self.facing)
         
         #update pos based off of direction looking and speed of movement
