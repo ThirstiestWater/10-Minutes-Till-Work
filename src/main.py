@@ -3,6 +3,7 @@ from pygame.locals import *
 from data.utils import *
 from data.entities.player import Player
 from data.entities.bullet import Bullet
+from data.entities.enemies import Enemies
 from random import randint
 
 class Game():
@@ -32,6 +33,9 @@ class Game():
             attack_speed = 0.5
             shooting_timer = attack_speed * self.FPS
             clicking = False
+
+            enemy_spawn_rate = 15
+            enemy_timer = enemy_spawn_rate * self.FPS
 
             playing = True
             movement = [0,0]
@@ -88,9 +92,13 @@ class Game():
 
                 if clicking and shooting_timer >= attack_speed * self.FPS:
                     shooting_timer = 0
-                    print("bullet shot")
                     self.bullets.append(Bullet(self))
                 shooting_timer += 1
+
+                if enemy_timer >= enemy_spawn_rate * self.FPS:
+                    enemy_timer = 0
+                    self.spawn_enemies()
+                enemy_timer += 1
 
                 self.player.update()
                 self.camera.update()
@@ -99,12 +107,20 @@ class Game():
                 self.tile_map.render()                
                 self.player.render()
 
-                e = 0
-                while e < len(self.enemies):
-                    enemy = self.enemies[e]
+                i = 0
+                while i < len(self.enemies):
+                    enemy = self.enemies[i]
+                    enemy.follow_player()
                     enemy.update()
                     enemy.render()
-                    e += 1
+                    for other in self.enemies:
+                        if not enemy is other:
+                            if enemy.collision(other):
+                                push_dir = [other.pos[0] - enemy.pos[0], other.pos[1] - enemy.pos[1]]
+                                push_distance = 1 # math.sqrt(push_dir[0]**2 + push_dir[1]**2) / 10
+                                other.push(push_dir, push_distance)
+                                enemy.push([push_dir[0] * -1, push_dir[1] * -1], push_distance)
+                    i += 1
 
                 i = 0
                 while i < len(self.bullets):
@@ -126,7 +142,12 @@ class Game():
 
         pygame.quit()
         sys.exit()
-    
+
+    def spawn_enemies(self):
+        for i in range(5):
+            position = [self.player.pos[0] + randint(self.world_h//2, self.world_h), self.player.pos[1] + randint(self.world_h//2, self.world_h)]
+            self.enemies.append(Enemies(self, position))
+
     def normalize_vector(self, vector: list) -> list:
         try:
             return [vector[0] / math.sqrt(vector[0]**2 + vector[1]**2), vector[1] / math.sqrt(vector[0]**2 + vector[1]**2)]

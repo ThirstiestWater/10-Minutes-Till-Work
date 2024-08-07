@@ -1,4 +1,4 @@
-import pygame
+import pygame, math
 
 class Player():
     
@@ -20,21 +20,24 @@ class Player():
         
     def render(self):
         real_pos = [self.pos[0] + self.game.camera.get_offset()[0], self.pos[1] + self.game.camera.get_offset()[1]]
+        norm = [self.facing[1], self.facing[0]]
 
         #Coffee Cup
         cup_color = (254,250,224)
         pygame.draw.circle(self.game.screen, cup_color, real_pos, self.size)
+
         #Handle
+        handle_dir = self.game.normalize_vector([self.facing[0] * -1 * math.sqrt(3)/2 - self.facing[1] * 1/2, self.facing[0] * 1/2 + self.facing[1] * -1 * math.sqrt(3)/2])
+        pygame.draw.circle(self.game.screen, cup_color, [real_pos[0] + handle_dir[0] * self.size, real_pos[1] + handle_dir[1] * self.size], self.size // 3 + 1)
         
         #take updated coffee size
         coffee_color = (221,161,94)
         pygame.draw.circle(self.game.screen, coffee_color, real_pos, self.size * 0.9 * self.health_percentage)
 
         #Eyes
-        norm = [self.facing[1], self.facing[0]]
         pygame.draw.circle(self.game.screen, (0, 0, 0), [real_pos[0] + self.facing[0] * self.size * 4/10 - norm[0] * self.size*1/3, real_pos[1] + self.facing[1] * self.size*4/10 + norm[1] * self.size*1/3], self.size//6)
         pygame.draw.circle(self.game.screen, (0, 0, 0), [real_pos[0] + self.facing[0] * self.size * 4/10 + norm[0] * self.size*1/3, real_pos[1] + self.facing[1] * self.size*4/10 - norm[1] * self.size*1/3], self.size//6)
-    
+
     def update(self):
         self.facing[0] = self.game.mouse_pos[0] - self.pos[0]
         self.facing[1] = self.game.mouse_pos[1] - self.pos[1]
