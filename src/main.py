@@ -30,11 +30,11 @@ class Game():
         Running = True
         while Running:
             
-            attack_speed = 0
+            attack_speed = 0.3
             shooting_timer = attack_speed * self.FPS
             clicking = False
 
-            enemy_spawn_rate = 0.5
+            enemy_spawn_rate = 5
             enemy_timer = enemy_spawn_rate * self.FPS
 
             playing = True
@@ -45,6 +45,7 @@ class Game():
             self.tile_map = Map(self)
 
             self.enemies = []
+            self.enemy_removal_list = []
 
             self.bullets = []
         
@@ -107,9 +108,7 @@ class Game():
                 self.tile_map.render()                
                 self.player.render()
 
-                i = 0
-                while i < len(self.enemies):
-                    enemy = self.enemies[i]
+                for enemy in self.enemies:
                     enemy.follow_player()
                     enemy.update()
                     enemy.render()
@@ -117,10 +116,12 @@ class Game():
                         if not enemy is other:
                             if enemy.collision(other):
                                 push_dir = [other.pos[0] - enemy.pos[0], other.pos[1] - enemy.pos[1]]
-                                push_distance = 1 # math.sqrt(push_dir[0]**2 + push_dir[1]**2) / 10
-                                other.push(push_dir, push_distance)
-                                enemy.push([push_dir[0] * -1, push_dir[1] * -1], push_distance)
-                    i += 1
+                                other.push(push_dir, 1)
+                                enemy.push([push_dir[0] * -1, push_dir[1] * -1], 1)
+
+                for enemy in self.enemy_removal_list:
+                    if enemy in self.enemies:
+                        self.enemies.remove(enemy)
 
                 i = 0
                 while i < len(self.bullets):
@@ -128,14 +129,6 @@ class Game():
                     bullet.update()
                     bullet.render()
                     i += 1
-
-                # if seconds_tracker % (self.FPS//2) == 0:
-                #     f"Half a second has passed"
-
-                # if seconds_tracker == self.FPS:
-                #     seconds_tracker = 0
-                #     seconds_timer += 1
-                # seconds_tracker += 1
 
                 pygame.display.update()
                 self.clock.tick(self.FPS)
@@ -145,7 +138,9 @@ class Game():
 
     def spawn_enemies(self):
         for i in range(5):
-            position = [self.player.pos[0] + randint(self.world_h//2, self.world_h), self.player.pos[1] + randint(self.world_h//2, self.world_h)]
+            x_sign = -1 if randint(0,1) else 1
+            y_sign = -1 if randint(0,1) else 1
+            position = [self.player.pos[0] + randint(self.world_h//2, self.world_h) * x_sign, self.player.pos[1] + randint(self.world_h//2, self.world_h) * y_sign]
             self.enemies.append(Enemies(self, position))
 
     def normalize_vector(self, vector: list) -> list:

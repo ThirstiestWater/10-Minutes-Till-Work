@@ -38,7 +38,7 @@ class Enemies():
         #hit player if collision
         if self.collision(self.game.player):
             self.game.player.hit(self.damage)
-            self.game.enemies.remove(self)
+            self.game.enemy_removal_list.append(self)
         
         i = 0
         while i < len(self.game.bullets):
@@ -49,7 +49,7 @@ class Enemies():
             i += 1
 
         if self.health <= 0:
-            self.game.enemies.remove(self)
+            self.game.enemy_removal_list.append(self)
     
     def follow_player(self):
         distance_from_player_x = self.game.player.pos[0] - self.pos[0]
