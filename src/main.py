@@ -30,11 +30,11 @@ class Game():
         Running = True
         while Running:
             
-            attack_speed = 0.5
+            attack_speed = 0
             shooting_timer = attack_speed * self.FPS
             clicking = False
 
-            enemy_spawn_rate = 15
+            enemy_spawn_rate = 0.5
             enemy_timer = enemy_spawn_rate * self.FPS
 
             playing = True

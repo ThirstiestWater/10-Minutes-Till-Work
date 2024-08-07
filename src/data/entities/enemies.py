@@ -21,10 +21,15 @@ class Enemies():
         ice_color = (254,250,224)
         
         real_pos = [self.pos[0] + self.game.camera.get_offset()[0], self.pos[1] + self.game.camera.get_offset()[1]]
+        norm = [self.direction[1], self.direction[0]]
         
         #take updated ice size
-        pygame.draw.circle(self.game.screen, ice_color, real_pos, self.size * 0.9 * self.health_percentage)
-        
+        pygame.draw.circle(self.game.screen, ice_color, real_pos, self.size * 0.9 * self.health_percentage)   
+
+        pygame.draw.circle(self.game.screen, (0, 0, 0), [real_pos[0] + self.direction[0] * self.size * 4/10 - norm[0] * self.size*1/3, real_pos[1] + self.direction[1] * self.size*4/10 + norm[1] * self.size*1/3], self.size//6)
+        pygame.draw.circle(self.game.screen, (0, 0, 0), [real_pos[0] + self.direction[0] * self.size * 4/10 + norm[0] * self.size*1/3, real_pos[1] + self.direction[1] * self.size*4/10 - norm[1] * self.size*1/3], self.size//6)
+  
+
         
     def update(self):
         self.pos[0] += self.direction[0] * self.speed 
