@@ -7,15 +7,18 @@ class Bullet():
         self.game = game
         
         #size of character
-        self.size = game.world_w * 0.02
-        self.pos = [game.player.pos[0], game.player.pos[1]]
+        self.size = game.world_w * 0.01
+        self.pos = game.player.pos[::]
         
-        self.direction = [game.mouse_pos]
-        self.speed = 5
+        self.direction = game.normalize_vector([game.mouse_pos[0] - self.pos[0], game.mouse_pos[1] - self.pos[1]])
+        self.speed = 10
         
     def render(self):
         bullet_color = (255, 255, 255)
-        pygame.draw.circle(self.game.screen, bullet_color, self.pos, self.size)
+        
+        real_pos = [self.pos[0] + self.game.camera.get_offset()[0], self.pos[1] + self.game.camera.get_offset()[1]]
+
+        pygame.draw.circle(self.game.screen, bullet_color, real_pos, self.size)
         
         
         

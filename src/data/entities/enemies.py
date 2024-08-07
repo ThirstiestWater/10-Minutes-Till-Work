@@ -4,7 +4,7 @@ from utils import normalize_vector as nv
 
 class Enemies():
     
-    MAX_HEALTH = 4
+    MAX_HEALTH = 5
     
     def __init__(self, game):
         self.health = self.MAX_HEALTH
@@ -17,7 +17,7 @@ class Enemies():
         
         self.game = game
         self.direction = [0, 0]
-        self.speed = 4
+        self.speed = 3
     
     def render(self):
         ice_color = (254,250,224)

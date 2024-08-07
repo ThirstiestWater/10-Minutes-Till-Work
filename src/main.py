@@ -29,7 +29,7 @@ class Game():
         Running = True
         while Running:
             
-            attack_speed = 1
+            attack_speed = 0.5
             shooting_timer = attack_speed * self.FPS
             clicking = False
 
@@ -86,9 +86,11 @@ class Game():
 
                 self.mouse_pos = [pygame.mouse.get_pos()[0] - self.camera.get_offset()[0], pygame.mouse.get_pos()[1] - self.camera.get_offset()[1]]
 
-                if clicking and shooting_timer == attack_speed * self.FPS:
+                if clicking and shooting_timer >= attack_speed * self.FPS:
                     shooting_timer = 0
+                    print("bullet shot")
                     self.bullets.append(Bullet(self))
+                shooting_timer += 1
 
                 self.player.update()
                 self.camera.update()
@@ -97,12 +99,12 @@ class Game():
                 self.tile_map.render()                
                 self.player.render()
 
-                i = 0
-                while i < len(self.enemies):
-                    enemy = self.enemies[i]
+                e = 0
+                while e < len(self.enemies):
+                    enemy = self.enemies[e]
                     enemy.update()
                     enemy.render()
-                    i += 1
+                    e += 1
 
                 i = 0
                 while i < len(self.bullets):
