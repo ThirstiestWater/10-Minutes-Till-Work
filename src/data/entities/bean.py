@@ -12,14 +12,24 @@ class Bean():
         self.pos = position
 
     def render(self):
+        bean_color = (0, 0, 0)
         
-        if self.collision(self.game.player):
-            if self.game.player.health_percentage < self.MAX_HEALTH - 0.2:
-                self.game.player.health_percentage = 1
-            else:
-                self.game.player.health_percentage += 0.2
+        real_pos = [self.pos[0] + self.game.camera.get_offset()[0], self.pos[1] + self.game.camera.get_offset()[1]]
+        
+        pygame.draw.circle(self.game.screen, bean_color, real_pos, self.size)
+        
+        # if self.collision(self.game.player):
+        #     if self.game.player.health_percentage < self.MAX_HEALTH - 0.2:
+        #         self.game.player.health_percentage = 1
+        #     else:
+        #         self.game.player.health_percentage += 0.2
             
-        
+    def update(self):
+        if self.collision(self.game.player):
+            self.game.player.health_percentage += 0.2
+            self.game.player.health += 1
+            
+            self.game.beans_removal_list.append(self)
     
     def collision(self, other) -> bool:
         x_distance_sqr = (self.pos[0] - other.pos[0])**2

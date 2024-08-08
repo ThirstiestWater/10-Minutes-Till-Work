@@ -4,6 +4,7 @@ from data.utils import *
 from data.entities.player import Player
 from data.entities.bullet import Bullet
 from data.entities.enemies import Enemies
+from data.entities.bean import Bean
 from random import randint
 
 class Game():
@@ -36,6 +37,9 @@ class Game():
 
             enemy_spawn_rate = 5
             enemy_timer = enemy_spawn_rate * self.FPS
+            
+            bean_spawn_rate = 2
+            bean_timer = bean_spawn_rate * self.FPS
 
             playing = True
             movement = [0,0]
@@ -46,6 +50,9 @@ class Game():
 
             self.enemies = []
             self.enemy_removal_list = []
+            
+            self.beans = []
+            self.beans_removal_list = []
 
             self.bullets = []
         
@@ -100,6 +107,11 @@ class Game():
                     enemy_timer = 0
                     self.spawn_enemies()
                 enemy_timer += 1
+                
+                if bean_timer >= bean_spawn_rate * self.FPS:
+                    bean_timer = 0
+                    self.spawn_beans()
+                bean_timer += 1
 
                 self.player.update()
                 self.camera.update()
@@ -122,6 +134,14 @@ class Game():
                 for enemy in self.enemy_removal_list:
                     if enemy in self.enemies:
                         self.enemies.remove(enemy)
+                        
+                for bean in self.beans:
+                    bean.update()
+                    bean.render()
+                
+                for bean in self.beans_removal_list:
+                    if bean in self.beans:
+                        self.beans.remove(bean)
 
                 i = 0
                 while i < len(self.bullets):
@@ -142,6 +162,14 @@ class Game():
             y_sign = -1 if randint(0,1) else 1
             position = [self.player.pos[0] + randint(self.world_h//2, self.world_h) * x_sign, self.player.pos[1] + randint(self.world_h//2, self.world_h) * y_sign]
             self.enemies.append(Enemies(self, position))
+            
+    def spawn_beans(self):
+        for i in range(3):
+            x_sign = -1 if randint(0,1) else 1
+            y_sign = -1 if randint(0,1) else 1
+            position = [self.player.pos[0] + randint(self.world_h//2, self.world_h) * x_sign, self.player.pos[1] + randint(self.world_h//2, self.world_h) * y_sign]
+            self.beans.append(Bean(self, position))
+            
 
     def normalize_vector(self, vector: list) -> list:
         try:
