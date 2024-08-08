@@ -5,6 +5,8 @@ class Bullet():
     
     def __init__(self, game):
         self.game = game
+        self.timer = 0
+        self.lifespan = 10
         
         #size of character
         self.size = game.world_w * 0.01
@@ -25,4 +27,6 @@ class Bullet():
         self.pos[0] += self.direction[0] * self.speed
         self.pos[1] += self.direction[1] * self.speed
         
-        
+        self.timer += 1
+        if self.timer >= self.lifespan * self.game.FPS:
+            self.game.bullets.remove(self)
