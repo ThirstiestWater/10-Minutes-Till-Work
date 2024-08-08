@@ -31,14 +31,14 @@ class Game():
         Running = True
         while Running:
             
-            attack_speed = 0.2
+            attack_speed = 0.1
             shooting_timer = attack_speed * self.FPS
             clicking = False
 
-            enemy_spawn_rate = 5
+            enemy_spawn_rate = 2
             enemy_timer = enemy_spawn_rate * self.FPS
             
-            bean_spawn_rate = 2
+            bean_spawn_rate = 15
             bean_timer = bean_spawn_rate * self.FPS
 
             playing = True

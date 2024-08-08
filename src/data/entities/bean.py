@@ -12,7 +12,7 @@ class Bean():
         self.pos = position
 
     def render(self):
-        bean_color = (0, 0, 0)
+        bean_color = (67,40,24)
         
         real_pos = [self.pos[0] + self.game.camera.get_offset()[0], self.pos[1] + self.game.camera.get_offset()[1]]
         
