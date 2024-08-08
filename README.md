@@ -1,6 +1,11 @@
-# 10 Minutes Till Work☕🫘
+# 10 Minutes Till Work ☕🧊☀️
 
-Run away and melt the ice cubes before they dilute your coffee before work!
+Fight back and melt the ice cubes before they dilute your coffee before work!
+
+### Demo
+```
+Coming Soon
+```
 
 ### Stack used:
 - Python 🐍
@@ -9,7 +14,15 @@ Run away and melt the ice cubes before they dilute your coffee before work!
 ## How to Play:
 
 Copy repository
+```
+https://github.com/ThirstiestWater/10-Minutes-Till-Work.git
+```
 
-Run main.py
+Find and Select
+```
+main.py
+```
+
+Click on the play arrow in the top left of your IDE
 
 
