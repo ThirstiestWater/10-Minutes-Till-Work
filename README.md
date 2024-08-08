@@ -18,6 +18,11 @@ Copy repository
 https://github.com/ThirstiestWater/10-Minutes-Till-Work.git
 ```
 
+In Terminal, download PyGame
+```
+pip install pygame
+```
+
 Find and Select
 ```
 main.py
