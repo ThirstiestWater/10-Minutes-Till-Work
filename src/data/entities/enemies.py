@@ -27,8 +27,11 @@ class Enemies():
         #take updated ice size
         distance_to_corner = math.sqrt(2 * (self.size ** 2))
         points = [[], [], [], []]
-        theta = math.atan(self.direction[1]/self.direction[0])
-        angles = [theta, theta - math.pi/2, theta - math.pi, theta - 3*math.pi/2]
+        try:
+            theta = math.atan(self.direction[1]/self.direction[0])
+        except:
+            theta = 0
+        angles = [theta, theta + math.pi/2, theta + math.pi, theta + 3*math.pi/2]
         points[0] = [(self.pos[0] + offset[0]) + (self.direction[0]*math.cos(angles[0]) - self.direction[1]*math.sin(angles[0]))*distance_to_corner, \
                      (self.pos[1] + offset[1]) + (self.direction[0]*math.sin(angles[0]) + self.direction[1]*math.cos(angles[0]))*distance_to_corner]
         points[1] = [(self.pos[0] + offset[0]) + (self.direction[0]*math.cos(angles[1]) - self.direction[1]*math.sin(angles[1]))*distance_to_corner, \

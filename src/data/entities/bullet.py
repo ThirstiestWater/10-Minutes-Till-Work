@@ -12,7 +12,7 @@ class Bullet():
         
         self.direction = game.normalize_vector([game.mouse_pos[0] - self.pos[0], game.mouse_pos[1] - self.pos[1]])
         self.speed = 10
-        self.damage = 1
+        self.damage = 2
         
     def render(self):
         bullet_color = (255, 255, 255)

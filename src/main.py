@@ -30,7 +30,7 @@ class Game():
         Running = True
         while Running:
             
-            attack_speed = 0.3
+            attack_speed = 0.2
             shooting_timer = attack_speed * self.FPS
             clicking = False
 
