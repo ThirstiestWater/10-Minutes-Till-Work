@@ -1,6 +1,6 @@
 # 10 Minutes Till Work ☕🧊☀️
 
-Fight back and melt the ice cubes before they dilute your coffee before work!
+Defend your morning brew by battling icy invaders! Melt the ice cubes before they water down your coffee and ruin your day!
 
 ### Demo
 ```
