@@ -1,6 +1,6 @@
-# Coffee Crashers ☕🫘
+# 10 Minutes Till Work☕🫘
 
-Run away from ice cubes before they dilute your coffee !
+Run away and melt the ice cubes before they dilute your coffee before work!
 
 ### Stack used:
 - Python 🐍
