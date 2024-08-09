@@ -54,6 +54,9 @@ class Player():
         if self.health > self.MAX_HEALTH:
             self.health = self.MAX_HEALTH
             self.health_percentage = 1
+        
+        if self.health_percentage <= 0:
+            self.game.playing = False
     
     def direction_change(self, new_direction):
         self.direction = new_direction

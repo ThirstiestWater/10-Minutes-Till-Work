@@ -6,6 +6,7 @@ from data.entities.bullet import Bullet
 from data.entities.enemies import Enemies
 from data.entities.bean import Bean
 from data.title_screen.text import Text
+from data.title_screen.camera_bait import Rat
 from random import randint
 
 class Game():
@@ -27,17 +28,33 @@ class Game():
         pygame.display.set_caption("Project")
         self.background = (127, 85, 57)
 
-
     def run(self):
         #Run Game
         Running = True
         while Running:
 
             self.title_screen = True
-            self.playing = True
 
-            line1 = Text(self, "10 Minutes", (255, 255, 255), "Candara", 96, [self.world_w//5, self.world_h//8], 30)
-            line2 = Text(self, "Till Work", (255, 255, 255), "Candara", 96, [self.world_w//5 * 2, self.world_h//8 + self.world_h//6], 30)
+            line1 = Text(self, "10 Minutes", (20, 180, 20), "Candara", 96, [self.world_w//5, self.world_h//8], 30)
+            line2 = Text(self, "Till Work", (20, 180, 20), "Candara", 96, [self.world_w//5 * 2, self.world_h//8 + self.world_h//6], 30)
+
+            line3 = Text(self, "Press Enter", (20, 180, 20), "Candara", 60, [self.world_w//5*2, self.world_h//8 * 6], 30, True)
+
+            self.player = Player(self)
+            self.player.direction_change([0.8,0])
+            rat = Rat(self.player.pos[::])
+            self.player.pos[0] -= self.world_w // 2
+            self.camera = Camera(target=rat)
+            title_background = Map(self)
+
+            distance_traveled = 0
+            self.mouse_pos = [10_000, rat.pos[1]]
+
+            self.bullets = []
+            self.enemies = []
+            self.enemy_removal_list = []
+            for i in range(100):
+                self.enemies.append(Enemies(self, [-200 - 5 * (i + 1), self.world_h // 2 - 50 + 1 * (i + 1) ]))
 
             while self.title_screen:
                 self.screen.fill(self.background)
@@ -48,11 +65,52 @@ class Game():
                         self.playing = False
                     if event.type == pygame.KEYDOWN and (event.key == pygame.K_RETURN or event.key == pygame.K_SPACE):
                         self.title_screen = False
+                        self.playing = True
+
+                rat.update()
+                distance_traveled += rat.speed
+
+                self.player.update()
+                self.camera.update()
+                title_background.update()
+
+                title_background.render()
+                self.player.render()
+
+                for enemy in self.enemies:
+                    enemy.follow_player()
+                    enemy.update()
+                    enemy.render()
+                    for other in self.enemies:
+                        if not enemy is other:
+                            if enemy.collision(other):
+                                push_dir = [other.pos[0] - enemy.pos[0], other.pos[1] - enemy.pos[1]]
+                                other.push(push_dir, 1)
+                                enemy.push([push_dir[0] * -1, push_dir[1] * -1], 1)
+
+                if self.enemies[-1].pos[0] >= self.world_w - self.camera.get_offset()[0] + 500 and self.mouse_pos[0] > 0:
+                    self.player.pos[0] = self.world_w - self.camera.get_offset()[0] + self.player.size
+                    self.player.direction_change([-0.8,0])
+                    self.mouse_pos = [-10_000, rat.pos[1]]
+                    for i in range(100):
+                        enemy = self.enemies[i]
+                        enemy.pos = [self.world_w - self.camera.get_offset()[0] + 200 + 5 * (i + 1), self.world_h // 2 - 50 + 1 * (i + 1)]
+                
+                if self.enemies[-1].pos[0] <= -1 * self.camera.get_offset()[0] - 500 and self.mouse_pos[0] < 0:
+                    self.player.pos[0] = -1 * self.camera.get_offset()[0] - self.player.size
+                    self.player.direction_change([0.8,0])
+                    self.mouse_pos = [10_000, rat.pos[1]]
+                    for i in range(100):
+                        enemy = self.enemies[i]
+                        enemy.pos = [-200 - self.camera.get_offset()[0] - 5 * (i + 1), self.world_h // 2 - 50 + 1 * (i + 1) ]
+                
                 
                 line1.update()
                 line2.update()
                 line1.render()
                 line2.render()
+                line3.update()
+                line3.render()
 
                 pygame.display.update()
                 self.clock.tick(self.FPS)
@@ -79,8 +137,6 @@ class Game():
             
             self.beans = []
             self.beans_removal_list = []
-
-            self.bullets = []
         
             #Run main scene
             while self.playing:

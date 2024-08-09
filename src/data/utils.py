@@ -14,7 +14,6 @@ class Camera():
         self.pos = target.pos
         self.original_pos = self.pos[::]
         self.offset = [0, 0]
-        self.speed = 1.5
 
     def get_offset(self):
         return self.offset
