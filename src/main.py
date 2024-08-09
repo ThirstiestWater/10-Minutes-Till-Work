@@ -5,6 +5,7 @@ from data.entities.player import Player
 from data.entities.bullet import Bullet
 from data.entities.enemies import Enemies
 from data.entities.bean import Bean
+from data.title_screen.text import Text
 from random import randint
 
 class Game():
@@ -26,10 +27,36 @@ class Game():
         pygame.display.set_caption("Project")
         self.background = (127, 85, 57)
 
+
     def run(self):
         #Run Game
         Running = True
         while Running:
+
+            self.title_screen = True
+            self.playing = True
+
+            line1 = Text(self, "10 Minutes", (255, 255, 255), "Candara", 96, [self.world_w//5, self.world_h//8], 30)
+            line2 = Text(self, "Till Work", (255, 255, 255), "Candara", 96, [self.world_w//5 * 2, self.world_h//8 + self.world_h//6], 30)
+
+            while self.title_screen:
+                self.screen.fill(self.background)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                        Running = False
+                        self.title_screen = False
+                        self.playing = False
+                    if event.type == pygame.KEYDOWN and (event.key == pygame.K_RETURN or event.key == pygame.K_SPACE):
+                        self.title_screen = False
+                
+                line1.update()
+                line2.update()
+                line1.render()
+                line2.render()
+
+                pygame.display.update()
+                self.clock.tick(self.FPS)
+
             
             attack_speed = 0.1
             shooting_timer = attack_speed * self.FPS
@@ -41,7 +68,6 @@ class Game():
             bean_spawn_rate = 15
             bean_timer = bean_spawn_rate * self.FPS
 
-            playing = True
             movement = [0,0]
             # Initialize all entities
             self.player = Player(self)
@@ -57,12 +83,12 @@ class Game():
             self.bullets = []
         
             #Run main scene
-            while playing:
+            while self.playing:
                 self.screen.fill(self.background)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                             Running = False
-                            playing = False
+                            self.playing = False
                     if event.type == pygame.KEYDOWN:
                         match event.key: # Switch Case for the Keys that are pressed
                             case pygame.K_SPACE:

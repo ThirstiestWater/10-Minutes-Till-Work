@@ -3,7 +3,7 @@ import pygame
 
 class Bullet():
     
-    def __init__(self, game):
+    def __init__(self, game):   
         self.game = game
         self.timer = 0
         self.lifespan = 10
