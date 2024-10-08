@@ -28,6 +28,6 @@ Find and Select
 main.py
 ```
 
-Click on the play arrow in the top left of your IDE
+Click on the play arrow in the top right of your IDE
 
 
